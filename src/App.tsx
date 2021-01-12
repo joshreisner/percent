@@ -1,26 +1,71 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import "./App.css";
 
-function App() {
+export default function App() {
+  const [title, setTitle] = useState("");
+  const [totalHours, setTotalHours] = useState(0);
+  const [totalMinutes, setTotalMinutes] = useState(0);
+  const [remainingHours, setRemainingHours] = useState(0);
+  const [remainingMinutes, setRemainingMinutes] = useState(0);
+
+  //run calculations
+  useEffect(() => {
+    const total = totalHours * 60 + totalMinutes;
+    const remaining = remainingHours * 60 + remainingMinutes;
+    const elapsed = total - remaining;
+    const percent = Math.round((elapsed / total) * 100);
+    const display = isNaN(percent)
+      ? "Audiobook % complete"
+      : percent.toString().concat("% complete");
+    setTitle(display);
+  }, [totalHours, totalMinutes, remainingHours, remainingMinutes]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <form>
+      <legend>{title}</legend>
+      <label>Total</label>
+      <div>
+        <input
+          type="number"
+          min="0"
+          max="60"
+          value={totalHours}
+          onChange={(e) => {
+            setTotalHours(parseInt(e.target.value));
+          }}
+        />
+        <span>:</span>
+        <input
+          type="number"
+          min="0"
+          max="60"
+          value={totalMinutes}
+          onChange={(e) => {
+            setTotalMinutes(parseInt(e.target.value));
+          }}
+        />
+      </div>
+      <label>Remaining</label>
+      <div>
+        <input
+          type="number"
+          min="0"
+          max="60"
+          value={remainingHours}
+          onChange={(e) => {
+            setRemainingHours(parseInt(e.target.value));
+          }}
+        />
+        <span>:</span>
+        <input
+          type="number"
+          min="0"
+          max="60"
+          value={remainingMinutes}
+          onChange={(e) => {
+            setRemainingMinutes(parseInt(e.target.value));
+          }}
+        />
+      </div>
+    </form>
   );
 }
-
-export default App;
