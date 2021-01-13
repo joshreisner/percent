@@ -3,10 +3,18 @@ import "./App.css";
 
 export default function App() {
   const [title, setTitle] = useState("");
-  const [totalHours, setTotalHours] = useState(0);
-  const [totalMinutes, setTotalMinutes] = useState(0);
-  const [remainingHours, setRemainingHours] = useState(0);
-  const [remainingMinutes, setRemainingMinutes] = useState(0);
+  const [totalHours, setTotalHours] = useState(
+    parseInt(localStorage.getItem("totalHours") || "0")
+  );
+  const [totalMinutes, setTotalMinutes] = useState(
+    parseInt(localStorage.getItem("totalMinutes") || "0")
+  );
+  const [remainingHours, setRemainingHours] = useState(
+    parseInt(localStorage.getItem("remainingHours") || "0")
+  );
+  const [remainingMinutes, setRemainingMinutes] = useState(
+    parseInt(localStorage.getItem("remainingMinutes") || "0")
+  );
 
   //run calculations
   useEffect(() => {
@@ -18,6 +26,12 @@ export default function App() {
       ? "Audiobook % complete"
       : percent.toString().concat("% complete");
     setTitle(display);
+
+    //save to storage
+    localStorage.setItem("totalHours", String(totalHours));
+    localStorage.setItem("totalMinutes", String(totalMinutes));
+    localStorage.setItem("remainingHours", String(remainingHours));
+    localStorage.setItem("remainingMinutes", String(remainingMinutes));
   }, [totalHours, totalMinutes, remainingHours, remainingMinutes]);
   return (
     <form>
